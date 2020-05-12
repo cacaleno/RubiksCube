@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 import RubicsCubeOOP as rc
 
 
@@ -38,7 +39,8 @@ class Pencere(tk.Tk):
         self.right = tk.PhotoImage(file="RUBIKS_CUBE/buttons/right.png")
         self.up = tk.PhotoImage(file="RUBIKS_CUBE/buttons/up.png")
         self.down = tk.PhotoImage(file="RUBIKS_CUBE/buttons/down.png")
-        self.frameselect() 
+        self.frameselect()
+        messagebox.showinfo("UYARI", "Lütfen Yüzey 5 ve Yüzey 6'da vertikal ve horizontal hareket kullanmayınız.Sadece diğer yüzey hareketlerini kontrol amaçlı bakınız. Yüzey 5 ve Yüzey 6 harektleri yapım aşamasındadır..") 
         self.mainloop()
 
     def frameselect(self):
@@ -59,13 +61,13 @@ class Pencere(tk.Tk):
         self.label3 = ttk.Button(self.freym2, image=self.right, command=lambda: self.horizontal(3, -1))
         self.label3.grid(column=4, row=3)
         #Vertical Scrolls
-        self.label14 = ttk.Button(self.freym2, image=self.up, command=lambda : self.vertical(1, 1))
+        self.label14 = ttk.Button(self.freym2, image=self.up, command=lambda : self.vertical(0, 1))
         self.label14.grid(column=1, row=0)
-        self.label15 = ttk.Button(self.freym2, image=self.down, command=lambda : self.vertical(1, -1))
+        self.label15 = ttk.Button(self.freym2, image=self.down, command=lambda : self.vertical(0, -1))
         self.label15.grid(column=1, row=4)
-        self.label16 = ttk.Button(self.freym2, image=self.up, command=lambda : self.vertical(3, 1))
+        self.label16 = ttk.Button(self.freym2, image=self.up, command=lambda : self.vertical(2, 1))
         self.label16.grid(column=3, row=0)
-        self.label17 = ttk.Button(self.freym2, image=self.down, command=lambda : self.vertical(3, -1))
+        self.label17 = ttk.Button(self.freym2, image=self.down, command=lambda : self.vertical(2, -1))
         self.label17.grid(column=3, row=4)
 
     def destroy2(self,variable):
@@ -75,28 +77,16 @@ class Pencere(tk.Tk):
 
     def vertical(self, column, rotation):  # look = 0 acef rotation , look = 1 bdef rotation
         if self.look.get() == 0 :          # rotation 1 --> up       -1 --> down
-            if column == 1 :
-                if rotation == 1 :
-                    cube.scroll_column1_up_acef()
+            if rotation == 1 :
+                    cube.scroll(column, cube.vertical_rotation_a, -1)
                     print(cube.Rubiks_Cube)
-                elif rotation == -1 :
-                    cube.scroll_column1_down_acef()
-            elif column == 3 :
-                if rotation == 1 :
-                    cube.scroll_column3_up_acef()
-                elif rotation == -1 :
-                    cube.scroll_column3_down_acef()
-        elif self.look.get() == 1 :
-            if column == 1 :
-                if rotation == 1 :
-                    cube.scroll_column1_up_bedf()
-                elif rotation == -1 :
-                    cube.scroll_column1_down_bedf()
-            elif column == 3 :
-                if rotation == 1 :
-                    cube.scroll_column3_up_bedf()
-                elif rotation == -1 :
-                    cube.scroll_column3_down_bedf()
+            elif rotation == -1 :
+                    cube.scroll(column, cube.vertical_rotation_a, 1)
+        elif self.look.get() == 1 : 
+            if rotation == 1 :
+                    cube.scroll(column, cube.vertical_rotation_b, -1)
+            elif rotation == -1 :
+                    cube.scroll(column, cube.vertical_rotation_b, 1)
         self.freym2.destroy()
         self.frameselect()
 
@@ -110,4 +100,5 @@ class Pencere(tk.Tk):
 
 cube =rc.Cube()
 pencere = Pencere()
+
 
