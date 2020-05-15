@@ -15,8 +15,6 @@ class Pencere(tk.Tk):
         #logic
         self.intvar = tk.IntVar()
         self.intvar.set(0)
-        self.look = tk.IntVar()   #acef or bdef 0(default)-> acef 1->bdef
-        self.look.set(0)
         #menubar(coming soon)
 
         #Cube Surface Buttons for Selection
@@ -51,7 +49,6 @@ class Pencere(tk.Tk):
                 self.label1 = tk.Label(self.freym2, background= cube.Rubiks_Cube[int(self.intvar.get())][satır][sutun], width=12 , height=6  )
                 self.label1.grid(column=sutun+1, row=satır+1 , padx=23, pady=20)
         #Buttons
-        
         self.label2 = ttk.Button(self.freym2, image=self.left, command=lambda: self.horizontal(1, 1))
         self.label2.grid(column=0, row=1)
         self.label2 = ttk.Button(self.freym2, image=self.left, command=lambda: self.horizontal(3, 1))
@@ -69,36 +66,106 @@ class Pencere(tk.Tk):
         self.label16.grid(column=3, row=0)
         self.label17 = ttk.Button(self.freym2, image=self.down, command=lambda : self.vertical(2, -1))
         self.label17.grid(column=3, row=4)
-
+        
     def destroy2(self,variable):
         self.freym2.destroy()
         self.intvar.set(variable)
         self.frameselect()
 
     def vertical(self, column, rotation):  # look = 0 acef rotation , look = 1 bdef rotation
-        if self.look.get() == 0 :          # rotation 1 --> up       -1 --> down
-            if rotation == 1 :
-                    cube.scroll(column, cube.vertical_rotation_a, -1)
-                    print(cube.Rubiks_Cube)
-            elif rotation == -1 :
-                    cube.scroll(column, cube.vertical_rotation_a, 1)
-        elif self.look.get() == 1 : 
-            if rotation == 1 :
-                    cube.scroll(column, cube.vertical_rotation_b, -1)
-            elif rotation == -1 :
-                    cube.scroll(column, cube.vertical_rotation_b, 1)
+                                            # rotation -1 --> up       1 --> down
+        if self.intvar.get() == 0 :
+            if column == 0:
+                if rotation == -1 :
+                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
+                    cube.rotate90_left(cube.d)
+                elif rotation == 1 :
+                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
+                    cube.rotate90_rıght(cube.d)
+            elif column == 2 :
+                if rotation == -1 :
+                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
+                    cube.rotate90_rıght(cube.b)
+                elif rotation == 1 :
+                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
+                    cube.rotate90_left(cube.b)
+        if self.intvar.get() == 1 :
+            if column == 0:
+                if rotation == -1 :
+                    cube.scrolly(column, cube.vertical_rotation_b, rotation)
+                    cube.rotate90_left(cube.a)
+                elif rotation == 1 :
+                    cube.scrolly(column, cube.vertical_rotation_b, rotation)                        
+                    cube.rotate90_rıght(cube.a)
+            elif column == 2 :
+                if rotation == -1 :
+                    cube.scrolly(column, cube.vertical_rotation_b, rotation)                        
+                    cube.rotate90_rıght(cube.c)
+                elif rotation == 1 :
+                    cube.scrolly(column, cube.vertical_rotation_b, rotation)
+                    cube.rotate90_left(cube.c)
+        if self.intvar.get() == 2 :
+            if column == 0:
+                if rotation == -1 :
+                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
+                    cube.rotate90_left(cube.b)
+                elif rotation == 1 :
+                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
+                    cube.rotate90_right(cube.b)
+            elif column == 2 :
+                if rotation == -1 :
+                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
+                    cube.rotate90_rıght(cube.d)
+                elif rotation == 1 :
+                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
+                    cube.rotate90_left(cube.d)
+        if self.intvar.get() == 3 :
+            if column == 0:
+                if rotation == -1 :
+                    cube.scrolly(column, cube.vertical_rotation_b, rotation)
+                    cube.rotate90_left(cube.c)
+                elif rotation == 1 :
+                    cube.scrolly(column, cube.vertical_rotation_b, rotation)                        
+                    cube.rotate90_rıght(cube.c)
+            elif column == 2 :
+                if rotation == -1 :
+                    cube.scrolly(column, cube.vertical_rotation_b, rotation)                        
+                    cube.rotate90_rıght(cube.a)
+                elif rotation == 1 :
+                    cube.scrolly(column, cube.vertical_rotation_b, rotation)
+                    cube.rotate90_left(cube.a)
+        if self.intvar.get() == 4 :
+            if column == 0:
+                pass
+            elif column == 2 :
+                pass
+        if self.intvar.get() == 5 :
+            if column == 0:
+                pass
+            elif column == 2 :
+                pass
         self.freym2.destroy()
         self.frameselect()
 
-    def horizontal(self, row, direction): # direction ----> 1 = left -1 = right       
-        if direction == 1 :
-            cube.scroll_line_left(row)
-        elif direction == -1 :
-            cube.scroll_line_right(row)
+    def horizontal(self, row, rotation):  # direction ----> 1 = left -1 = right       
+        if self.intvar.get() == 4 or self.intvar.get() == 5 :
+            pass
+        else :
+            cube.scrollx(row, cube.horizontal_rotation , rotation)
+            if row == 0 and rotation == -1 :      
+                cube.rotate90_rıght(cube.e)
+            elif row == 0 and rotation == 1 :
+                cube.rotate90_rıght(cube.e)
+            elif row == 2 and rotation == -1 :
+                cube.rotate90_left(cube.f)
+            elif row == 2 and rotation == 1 :
+                cube.rotate90_rıght(cube.f)
         self.freym2.destroy()
         self.frameselect()
 
-cube =rc.Cube()
+cube = rc.Cube()
 pencere = Pencere()
+
+
 
 
