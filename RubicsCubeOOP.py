@@ -1,4 +1,5 @@
 
+
 class Cube() :
     def __init__(self):
         super().__init__()
@@ -27,7 +28,9 @@ class Cube() :
         self.f3 = ["orange", "orange", "orange"]
         self.f  = [self.f1, self.f2, self.f3]    
         self.Rubiks_Cube = [self.a, self.b, self.c, self.d, self.e, self.f]
-    
+        self.vertical_rotation_a = [self.a, self.e, self.c, self.f]
+        self.vertical_rotation_b = [self.b, self.e, self.d, self.f]
+        self.horizontal_rotation = [self.a, self.b, self.c, self.d]
     def rotate90_left(self,matrix):
         new_matrix = []
         for i in range(len(matrix[0]), 0, -1):
@@ -76,70 +79,6 @@ class Cube() :
         self.rotate90_rıght(self.f)
         print(self.Rubiks_Cube)
 
-    def scroll_column1_up_acef(self) :
-        a4 = self.a1[0] + self.a2[0] + self.a3[0]
-        self.a1[0], self.a2[0], self.a3[0] = self.f1[0], self.f2[0], self.f3[0]
-        self.f1[0], self.f2[0], self.f3[0] = self.c1[0], self.c2[0], self.c3[0]
-        self.c1[0], self.c2[0], self.c3[0] = self.e1[0], self.e2[0], self.e3[0]
-        self.e1[0], self.e2[0], self.e3[0] = a4[0], a4[1], a4[2]
-        self.rotate90_left(self.d)
-    
-    def scroll_column3_up_acef(self) :
-        a4 = self.a1[0] + self.a2[0] + self.a3[0]
-        self.a1[2], self.a2[2], self.a3[2] = self.f1[2], self.f2[2], self.f3[2]
-        self.f1[2], self.f2[2], self.f3[2] = self.c1[2], self.c2[2], self.c3[2]
-        self.c1[2], self.c2[2], self.c3[2] = self.e1[2], self.e2[2], self.e3[2]
-        self.e1[2], self.e2[2], self.e3[2] = a4[0], a4[1], a4[2]
-        self.rotate90_rıght(self.b)
-
-    def scroll_column1_down_acef(self) :
-        a4 = self.a1[0] + self.a2[0] + self.a3[0]
-        self.a1[0], self.a2[0], self.a3[0] = self.e1[0], self.e2[0], self.e3[0]
-        self.c1[0], self.c2[0], self.c3[0] = self.f1[0], self.f2[0], self.f3[0]
-        self.e1[0], self.e2[0], self.e3[0] = self.c1[0], self.c2[0], self.c3[0]
-        self.f1[0], self.f2[0], self.f3[0] = a4[0], a4[1], a4[2]
-        self.rotate90_rıght(self.d)
-
-    def scroll_column3_down_acef(self) :
-        a4 = self.a1[0] + self.a2[0] + self.a3[0]
-        self.a1[2], self.a2[2], self.a3[2] = self.e1[2], self.e2[2], self.e3[2]
-        self.c1[2], self.c2[2], self.c3[2] = self.f1[2], self.f2[2], self.f3[2]
-        self.e1[2], self.e2[2], self.e3[2] = self.c1[2], self.c2[2], self.c3[2]
-        self.f1[2], self.f2[2], self.f3[2] = a4[0], a4[1], a4[2]
-        self.rotate90_left(self.b)
-        
-    def scroll_column1_up_bedf(self) :
-        b4 = self.b1[0] + self.b2[0] + self.b3[0]
-        self.b1[0], self.b2[0], self.b3[0] = self.f1[0], self.f2[0], self.f3[0]
-        self.f1[0], self.f2[0], self.f3[0] = self.d1[0], self.d2[0], self.d3[0]
-        self.d1[0], self.d2[0], self.d3[0] = self.e1[0], self.e2[0], self.e3[0]
-        self.e1[0], self.e2[0], self.e3[0] = b4[0], b4[1], b4[2]
-        rotate90_left(self.a)
-
-    def scroll_column3_up_bedf(self) :
-        b4 = self.b1[2] + self.b2[2] + self.b3[2]
-        self.b1[2], self.b2[2], self.b3[2] = self.f1[2], self.f2[2], self.f3[2]
-        self.f1[2], self.f2[2], self.f3[2] = self.d1[2], self.d2[2], self.d3[2]
-        self.d1[2], self.d2[2], self.d3[2] = self.e1[2], self.e2[2], self.e3[2]
-        self.e1[2], self.e2[2], self.e3[2] = b4[0], b4[1], b4[2]
-        rotate90_rıght(self.c)
-
-    def scroll_column1_down_bedf(self) :
-        b4 = self.b1[0] + self.b2[0] + self.b3[2]
-        self.b1[0], self.b2[0], self.b3[0] = self.e1[0], self.e2[0], self.e3[0]
-        self.e1[0], self.e2[0], self.e3[0] = self.d1[0], self.d2[0], self.d3[0]
-        self.d1[0], self.d2[0], self.d3[0] = self.f1[0], self.f2[0], self.f3[0]
-        self.f1[0], self.f2[0], self.f3[0] = b4[0], b4[1], b4[2]
-        rotate90_rıght(self.a)
-
-    def scroll_column3_down_bedf(self) :
-        b4 = self.b1[2] + self.b2[2] + self.b3[2]
-        self.b1[2], self.b2[2], self.b3[2] = self.e1[2], self.e2[2], self.e3[2]
-        self.e1[2], self.e2[2], self.e3[2] = self.d1[2], self.d2[2], self.d3[2]
-        self.d1[2], self.d2[2], self.d3[2] = self.f1[2], self.f2[2], self.f3[2]
-        self.f1[2], self.f2[2], self.f3[2] = b4[0], b4[1], b4[2]
-        rotate90_left(self.c)
-
     def scroll_line_left(self,x):
         if x == 1:
             self.scroll_line1_left()
@@ -151,7 +90,40 @@ class Cube() :
             self.scroll_line1_right()
         elif x == 3 :
             self.scroll_line3_right()
+
+    def scrolly(self, column, matrixes, rotation):
+        y = len(matrixes)
+        sütunlar = []
+        for m in matrixes:
+            sütun = []
+            for i in m:
+                sütun.append(i[column])
+            sütunlar.append(sütun)
+        rotation %= y
+        if rotation < 0:
+            rotation += y
+        for i in range(rotation):
+            sütunlar.insert(0, sütunlar.pop())
+        for m, s in zip(matrixes, sütunlar):
+            for i, j in zip(m, s):
+                i[column] = j
+
+    def scrollx(self, line, matrixes, rotation):
+        uzunluk = len(matrixes)
+        satırlar = []
+        for matris in matrixes:
+            satır = []
+            satır.append(matris[line])
+            satırlar.append(satır)
+        rotation %= uzunluk
+        if rotation < 0:
+            rotation += uzunluk
+        for i in range(rotation):
+            satırlar.insert(0, satırlar.pop())
+        for a , b in zip(satırlar, matrixes) :
+            b[line] = a
           
 cube = Cube()
 print(cube.a1)
+
 
