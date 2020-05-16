@@ -31,6 +31,7 @@ class Cube() :
         self.vertical_rotation_a = [self.a, self.e, self.c, self.f]
         self.vertical_rotation_b = [self.b, self.e, self.d, self.f]
         self.horizontal_rotation = [self.a, self.b, self.c, self.d]
+        
     def rotate90_left(self,matrix):
         new_matrix = []
         for i in range(len(matrix[0]), 0, -1):
