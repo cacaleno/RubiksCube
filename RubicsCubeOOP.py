@@ -42,54 +42,6 @@ class Cube() :
         rotated = [list(reversed(col)) for col in zip(*matrix)]
         matrix[:] = rotated[:]
         return matrix
-    
-    def scroll_line1_left(self) :
-        a4 = self.a1.copy()
-        self.a1[0:] = self.b1[0:]
-        self.b1[0:] = self.c1[0:]
-        self.c1[0:] = self.d1[0:]
-        self.d1[0:] = a4[0:]
-        self.rotate90_rıght(self.e)        
-        print(self.Rubiks_Cube)
-
-    def scroll_line3_left(self) :
-        a4 = self.a3.copy()
-        self.a3[0:] = self.b3[0:]
-        self.b3[0:] = self.c3[0:]
-        self.c3[0:] = self.d3[0:]
-        self.d3[0:] = a4[0:]
-        self.rotate90_left(self.f)
-        print(self.Rubiks_Cube)
-
-    def scroll_line1_right(self) :
-        a4 = self.a1.copy()
-        self.a1[0:] = self.d1[0:]
-        self.d1[0:] = self.c1[0:]
-        self.c1[0:] = self.b1[0:]
-        self.b1[0:] = a4[0:]
-        self.rotate90_left(self.e)
-        print(self.Rubiks_Cube)
-
-    def scroll_line3_right(self) :
-        a4 = self.a3.copy()
-        self.a3[0:] = self.d3[0:]
-        self.d3[0:] = self.c3[0:]
-        self.c3[0:] = self.b3[0:]
-        self.b3[0:] = a4[0:]
-        self.rotate90_rıght(self.f)
-        print(self.Rubiks_Cube)
-
-    def scroll_line_left(self,x):
-        if x == 1:
-            self.scroll_line1_left()
-        elif x == 3 :
-            self.scroll_line3_left()
-
-    def scroll_line_right(self,x):
-        if x == 1:
-            self.scroll_line1_right()
-        elif x == 3 :
-            self.scroll_line3_right()
 
     def scrolly(self, column, matrixes, rotation):
         y = len(matrixes)
@@ -112,9 +64,7 @@ class Cube() :
         uzunluk = len(matrixes)
         satırlar = []
         for matris in matrixes:
-            satır = []
-            satır.append(matris[line])
-            satırlar.append(satır)
+            satırlar.append(matris[line])
         rotation %= uzunluk
         if rotation < 0:
             rotation += uzunluk
@@ -122,8 +72,4 @@ class Cube() :
             satırlar.insert(0, satırlar.pop())
         for a , b in zip(satırlar, matrixes) :
             b[line] = a
-          
-cube = Cube()
-print(cube.a1)
-
-
+            
