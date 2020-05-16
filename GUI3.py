@@ -1,8 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 import RubicsCubeOOP as rc
-
+import os
 
 class Pencere(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -15,30 +17,31 @@ class Pencere(tk.Tk):
         #logic
         self.intvar = tk.IntVar()
         self.intvar.set(0)
+        
         #menubar(coming soon)
 
         #Cube Surface Buttons for Selection
         self.freym = ttk.Frame(self, padding=(34,10,36,10), relief="groove")
         self.freym.grid()
         
-        self.butonyuzey1 = ttk.Button(self.freym, text=f"Yüzey 1", command=lambda :self.destroy2(0))
+        self.butonyuzey1 = ttk.Button(self.freym, text="FRONT", command=lambda :self.destroy2(0))
         self.butonyuzey1.grid(column=0, row=0)
-        self.butonyuzey2 = ttk.Button(self.freym, text=f"Yüzey 2", command=lambda :self.destroy2(1))
+        self.butonyuzey2 = ttk.Button(self.freym, text="RIGHT", command=lambda :self.destroy2(1))
         self.butonyuzey2.grid(column=1, row=0)
-        self.butonyuzey3 = ttk.Button(self.freym, text=f"Yüzey 3", command=lambda :self.destroy2(2))
+        self.butonyuzey3 = ttk.Button(self.freym, text="BEHIND", command=lambda :self.destroy2(2))
         self.butonyuzey3.grid(column=2, row=0)
-        self.butonyuzey4 = ttk.Button(self.freym, text=f"Yüzey 4", command=lambda :self.destroy2(3))
+        self.butonyuzey4 = ttk.Button(self.freym, text="LEFT", command=lambda :self.destroy2(3))
         self.butonyuzey4.grid(column=3, row=0)
-        self.butonyuzey5 = ttk.Button(self.freym, text=f"Yüzey 5", command=lambda :self.destroy2(4))
+        self.butonyuzey5 = ttk.Button(self.freym, text="TOP", command=lambda :self.destroy2(4))
         self.butonyuzey5.grid(column=4, row=0)
-        self.butonyuzey6 = ttk.Button(self.freym, text=f"Yüzey 6", command=lambda :self.destroy2(5))
+        self.butonyuzey6 = ttk.Button(self.freym, text="BOTTOM", command=lambda :self.destroy2(5))
         self.butonyuzey6.grid(column=5, row=0)
-        self.left = tk.PhotoImage(file="RUBIKS_CUBE/buttons/left.png")
-        self.right = tk.PhotoImage(file="RUBIKS_CUBE/buttons/right.png")
-        self.up = tk.PhotoImage(file="RUBIKS_CUBE/buttons/up.png")
-        self.down = tk.PhotoImage(file="RUBIKS_CUBE/buttons/down.png")
+        self.left = tk.PhotoImage(file=os.getcwd()+"/buttons/left.png")
+        self.right = tk.PhotoImage(file=os.getcwd()+"/buttons/right.png")
+        self.up = tk.PhotoImage(file=os.getcwd()+"/buttons/up.png")
+        self.down = tk.PhotoImage(file=os.getcwd()+"/buttons/down.png")
         self.frameselect()
-        messagebox.showinfo("UYARI", "Lütfen Yüzey 5 ve Yüzey 6'da vertikal ve horizontal hareket kullanmayınız.Sadece diğer yüzey hareketlerini kontrol amaçlı bakınız. Yüzey 5 ve Yüzey 6 harektleri yapım aşamasındadır..") 
+        messagebox.showinfo("UYARI", "Lütfen ÜST ve ALT yüzeylerde vertikal ve horizontal hareket kullanmayınız.Sadece diğer yüzey hareketlerini kontrol amaçlı bakınız. Yüzey 5 ve Yüzey 6 harektleri yapım aşamasındadır..") 
         self.mainloop()
 
     def frameselect(self):
@@ -46,16 +49,16 @@ class Pencere(tk.Tk):
         self.freym2.grid()
         for satır in range(3) :
             for sutun in range(3) :
-                self.label1 = tk.Label(self.freym2, background= cube.Rubiks_Cube[int(self.intvar.get())][satır][sutun], width=12 , height=6  )
+                self.label1 = tk.Label(self.freym2, background= cube.Rubiks_Cube[self.intvar.get()][satır][sutun], width=12 , height=6  )
                 self.label1.grid(column=sutun+1, row=satır+1 , padx=23, pady=20)
         #Buttons
-        self.label2 = ttk.Button(self.freym2, image=self.left, command=lambda: self.horizontal(1, 1))
+        self.label2 = ttk.Button(self.freym2, image=self.left, command=lambda: self.horizontal(0, -1))
         self.label2.grid(column=0, row=1)
-        self.label2 = ttk.Button(self.freym2, image=self.left, command=lambda: self.horizontal(3, 1))
+        self.label2 = ttk.Button(self.freym2, image=self.left, command=lambda: self.horizontal(2, -1))
         self.label2.grid(column=0, row=3)
-        self.label3 = ttk.Button(self.freym2, image=self.right, command=lambda: self.horizontal(1, -1))
+        self.label3 = ttk.Button(self.freym2, image=self.right, command=lambda: self.horizontal(0, 1))
         self.label3.grid(column=4, row=1)
-        self.label3 = ttk.Button(self.freym2, image=self.right, command=lambda: self.horizontal(3, -1))
+        self.label3 = ttk.Button(self.freym2, image=self.right, command=lambda: self.horizontal(2, 1))
         self.label3.grid(column=4, row=3)
         #Vertical Scrolls
         self.label14 = ttk.Button(self.freym2, image=self.up, command=lambda : self.vertical(0, 1))
@@ -151,21 +154,22 @@ class Pencere(tk.Tk):
         if self.intvar.get() == 4 or self.intvar.get() == 5 :
             pass
         else :
-            cube.scrollx(row, cube.horizontal_rotation , rotation)
-            if row == 0 and rotation == -1 :      
-                cube.rotate90_rıght(cube.e)
-            elif row == 0 and rotation == 1 :
-                cube.rotate90_rıght(cube.e)
-            elif row == 2 and rotation == -1 :
-                cube.rotate90_left(cube.f)
-            elif row == 2 and rotation == 1 :
-                cube.rotate90_rıght(cube.f)
+            if row == 0  : 
+                if rotation == -1 :
+                    cube.scrollx(row, cube.horizontal_rotation , rotation)     
+                    cube.rotate90_rıght(cube.e)
+                elif rotation == 1 :
+                    cube.scrollx(row, cube.horizontal_rotation , rotation)
+                    cube.rotate90_rıght(cube.e)
+            if row == 2  :
+                if rotation == -1:
+                    cube.scrollx(row, cube.horizontal_rotation , rotation)
+                    cube.rotate90_left(cube.f)
+                elif rotation == 1 :
+                    cube.scrollx(row, cube.horizontal_rotation , rotation)
+                    cube.rotate90_rıght(cube.f)
         self.freym2.destroy()
         self.frameselect()
 
 cube = rc.Cube()
 pencere = Pencere()
-
-
-
-
