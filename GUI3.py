@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
@@ -61,14 +62,21 @@ class Pencere(tk.Tk):
         self.label3 = ttk.Button(self.freym2, image=self.right, command=lambda: self.horizontal(2, 1))
         self.label3.grid(column=4, row=3)
         #Vertical Scrolls
-        self.label14 = ttk.Button(self.freym2, image=self.up, command=lambda : self.vertical(0, 1))
+        self.label14 = ttk.Button(self.freym2, image=self.up, command=lambda : self.vertical(0, -1))
         self.label14.grid(column=1, row=0)
-        self.label15 = ttk.Button(self.freym2, image=self.down, command=lambda : self.vertical(0, -1))
+        self.label15 = ttk.Button(self.freym2, image=self.down, command=lambda : self.vertical(0, 1))
         self.label15.grid(column=1, row=4)
-        self.label16 = ttk.Button(self.freym2, image=self.up, command=lambda : self.vertical(2, 1))
+        self.label16 = ttk.Button(self.freym2, image=self.up, command=lambda : self.vertical(2, -1))
         self.label16.grid(column=3, row=0)
-        self.label17 = ttk.Button(self.freym2, image=self.down, command=lambda : self.vertical(2, -1))
+        self.label17 = ttk.Button(self.freym2, image=self.down, command=lambda : self.vertical(2, 1))
         self.label17.grid(column=3, row=4)
+        #Labels
+        self.label_a = []
+        self.label_b = []
+        self.label_c = []
+        self.label_d = []
+        self.label_e = []
+        self.label_f = []
         
     def destroy2(self,variable):
         self.freym2.destroy()
@@ -78,36 +86,47 @@ class Pencere(tk.Tk):
     def vertical(self, column, rotation):  # look = 0 acef rotation , look = 1 bdef rotation
                                             # rotation -1 --> up       1 --> down
         if self.intvar.get() == 0 :
+            cube.mirrorx(cube.mirror(cube.c))
             if column == 0:
                 if rotation == -1 :
                     cube.scrolly(column, cube.vertical_rotation_a, rotation)
                     cube.rotate90_left(cube.d)
                 elif rotation == 1 :
                     cube.scrolly(column, cube.vertical_rotation_a, rotation)
-                    cube.rotate90_rıght(cube.d)
+                    cube.rotate90_right(cube.d)
             elif column == 2 :
                 if rotation == -1 :
                     cube.scrolly(column, cube.vertical_rotation_a, rotation)
-                    cube.rotate90_rıght(cube.b)
+                    cube.rotate90_right(cube.b)
                 elif rotation == 1 :
                     cube.scrolly(column, cube.vertical_rotation_a, rotation)
                     cube.rotate90_left(cube.b)
+            cube.mirrorx(cube.mirror(cube.c))
         if self.intvar.get() == 1 :
+            cube.mirrorx(cube.mirror(cube.d))
+            cube.rotate90_left(cube.e)
+            cube.rotate90_right(cube.f)
             if column == 0:
                 if rotation == -1 :
                     cube.scrolly(column, cube.vertical_rotation_b, rotation)
                     cube.rotate90_left(cube.a)
                 elif rotation == 1 :
                     cube.scrolly(column, cube.vertical_rotation_b, rotation)                        
-                    cube.rotate90_rıght(cube.a)
+                    cube.rotate90_right(cube.a)
             elif column == 2 :
                 if rotation == -1 :
                     cube.scrolly(column, cube.vertical_rotation_b, rotation)                        
-                    cube.rotate90_rıght(cube.c)
+                    cube.rotate90_right(cube.c)
                 elif rotation == 1 :
                     cube.scrolly(column, cube.vertical_rotation_b, rotation)
                     cube.rotate90_left(cube.c)
+            cube.rotate90_left(cube.f)
+            cube.rotate90_right(cube.e)
+            cube.mirrorx(cube.mirror(cube.d))
         if self.intvar.get() == 2 :
+            cube.mirrorx(cube.mirror(cube.a))
+            cube.rotate90_right(cube.rotate90_right(cube.e))
+            cube.rotate90_right(cube.rotate90_right(cube.f))
             if column == 0:
                 if rotation == -1 :
                     cube.scrolly(column, cube.vertical_rotation_a, rotation)
@@ -118,58 +137,105 @@ class Pencere(tk.Tk):
             elif column == 2 :
                 if rotation == -1 :
                     cube.scrolly(column, cube.vertical_rotation_a, rotation)
-                    cube.rotate90_rıght(cube.d)
+                    cube.rotate90_right(cube.d)
                 elif rotation == 1 :
                     cube.scrolly(column, cube.vertical_rotation_a, rotation)
                     cube.rotate90_left(cube.d)
+            cube.rotate90_left(cube.rotate90_right(cube.e))
+            cube.rotate90_left(cube.rotate90_right(cube.f))
+            cube.mirrorx(cube.mirror(cube.a))
         if self.intvar.get() == 3 :
+            cube.mirrorx(cube.mirror(cube.b))
+            cube.rotate90_left(cube.f)
+            cube.rotate90_right(cube.e)
             if column == 0:
                 if rotation == -1 :
                     cube.scrolly(column, cube.vertical_rotation_b, rotation)
                     cube.rotate90_left(cube.c)
                 elif rotation == 1 :
                     cube.scrolly(column, cube.vertical_rotation_b, rotation)                        
-                    cube.rotate90_rıght(cube.c)
+                    cube.rotate90_right(cube.c)
             elif column == 2 :
                 if rotation == -1 :
                     cube.scrolly(column, cube.vertical_rotation_b, rotation)                        
-                    cube.rotate90_rıght(cube.a)
+                    cube.rotate90_right(cube.a)
                 elif rotation == 1 :
                     cube.scrolly(column, cube.vertical_rotation_b, rotation)
                     cube.rotate90_left(cube.a)
-        if self.intvar.get() == 4 :
+            cube.rotate90_left(cube.e)
+            cube.rotate90_right(cube.f)
+            cube.mirrorx(cube.mirror(cube.b))
+        if self.intvar.get() == 4 or self.intvar.get() == 5 :
+            cube.mirrorx(cube.mirror(cube.d))
             if column == 0:
-                pass
+                if rotation == -1 :
+                    cube.rotate90_left(cube.d)
+                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
+                elif rotation == 1 :
+                    cube.rotate90_right(cube.d)
+                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
             elif column == 2 :
-                pass
-        if self.intvar.get() == 5 :
-            if column == 0:
-                pass
-            elif column == 2 :
-                pass
+                if rotation == -1 :
+                    cube.rotate90_right(cube.b)
+                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
+                elif rotation == 1 :
+                    cube.rotate90_left(cube.b)
+                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
+            cube.mirrorx(cube.mirror(cube.d))
         self.freym2.destroy()
         self.frameselect()
 
     def horizontal(self, row, rotation):  # direction ----> 1 = left -1 = right       
-        if self.intvar.get() == 4 or self.intvar.get() == 5 :
-            pass
+        if self.intvar.get() == 4 :
+            cube.rotate90_left(cube.e)
+            cube.mirrorx(cube.mirror(cube.d))
+            cube.mirrorx(cube.mirror(cube.f))
+            if row == 0 :
+                if rotation == -1 :
+                    cube.scrolly(row, cube.vertical_rotation_b, 1)
+                elif rotation == 1 :
+                    cube.scrolly(row, cube.vertical_rotation_b, -1)
+            elif row == 0 :
+                if rotation == -1 :
+                    cube.scrolly(row, cube.vertical_rotation_b, 1)
+                elif rotation == 1 :
+                    cube.scrolly(row, cube.vertical_rotation_b, -1)
+            cube.mirrorx(cube.mirror(cube.d))
+            cube.rotate90_right(cube.e)
+            cube.mirrorx(cube.mirror(cube.f))
+        elif self.intvar.get() == 5 :
+            cube.rotate90_left(cube.e)
+            if row == 0 :
+                if rotation == -1 :
+                    pass
+                elif rotation == 1 :
+                    pass
+            if row == 0 :
+                if rotation == -1 :
+                    pass
+                elif rotation == 1 :
+                    pass
+            cube.rotate90_left(cube.e)
         else :
             if row == 0  : 
                 if rotation == -1 :
                     cube.scrollx(row, cube.horizontal_rotation , rotation)     
-                    cube.rotate90_rıght(cube.e)
+                    cube.rotate90_left(cube.e)
                 elif rotation == 1 :
                     cube.scrollx(row, cube.horizontal_rotation , rotation)
-                    cube.rotate90_rıght(cube.e)
+                    cube.rotate90_right(cube.e)
             if row == 2  :
                 if rotation == -1:
                     cube.scrollx(row, cube.horizontal_rotation , rotation)
                     cube.rotate90_left(cube.f)
                 elif rotation == 1 :
                     cube.scrollx(row, cube.horizontal_rotation , rotation)
-                    cube.rotate90_rıght(cube.f)
+                    cube.rotate90_right(cube.f)
         self.freym2.destroy()
         self.frameselect()
 
 cube = rc.Cube()
-pencere = Pencere()
+
+
+
+
