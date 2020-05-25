@@ -11,7 +11,7 @@ class Pencere(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         #Window Options
-        self.geometry("525x570")
+        #self.geometry("525x570")
         self.title("Rubik's Cube")
         self.wm_resizable(0,0)
 
@@ -23,7 +23,7 @@ class Pencere(tk.Tk):
 
         #Cube Surface Buttons for Selection
         self.freym = ttk.Frame(self, padding=(34,10,36,10), relief="groove")
-        self.freym.grid()
+        self.freym.grid(row=0,column=1)
         
         self.butonyuzey1 = ttk.Button(self.freym, text="FRONT", command=lambda :self.destroy2(0))
         self.butonyuzey1.grid(column=0, row=0)
@@ -42,16 +42,16 @@ class Pencere(tk.Tk):
         self.up = tk.PhotoImage(file=os.getcwd()+"/buttons/up.png")
         self.down = tk.PhotoImage(file=os.getcwd()+"/buttons/down.png")
         self.frameselect()
-        messagebox.showinfo("UYARI", "Lütfen ÜST ve ALT yüzeylerde vertikal ve horizontal hareket kullanmayınız.Sadece diğer yüzey hareketlerini kontrol amaçlı bakınız. Yüzey 5 ve Yüzey 6 harektleri yapım aşamasındadır..") 
+        #messagebox.showinfo("UYARI", "Lütfen ÜST ve ALT yüzeylerde vertikal ve horizontal hareket kullanmayınız.Sadece diğer yüzey hareketlerini kontrol amaçlı bakınız. Yüzey 5 ve Yüzey 6 harektleri yapım aşamasındadır..") 
         self.mainloop()
 
     def frameselect(self):
-        self.freym2 = tk.Frame(self , background="#ccffcc" )
-        self.freym2.grid()
-        for satır in range(3) :
-            for sutun in range(3) :
-                self.label1 = tk.Label(self.freym2, background= cube.Rubiks_Cube[self.intvar.get()][satır][sutun], width=12 , height=6  )
-                self.label1.grid(column=sutun+1, row=satır+1 , padx=23, pady=20)
+        self.freym2 = tk.Frame(self, background="#ccffcc" )
+        self.freym2.grid(column=1,row=1)
+        for row in range(3) :
+            for column in range(3) :
+                self.label = tk.Label(self.freym2, background= cube.Rubiks_Cube[self.intvar.get()][row][column], width=12 , height=6  )
+                self.label.grid(column=column+1, row=row+1 , padx=5, pady=5)
         #Buttons
         self.label2 = ttk.Button(self.freym2, image=self.left, command=lambda: self.horizontal(0, -1))
         self.label2.grid(column=0, row=1)
@@ -77,7 +77,28 @@ class Pencere(tk.Tk):
         self.label_d = []
         self.label_e = []
         self.label_f = []
-        
+        #All Surfaces
+        self.frame0 = tk.Frame(self, background="#ccffcc" )
+        self.frame0.grid(column=1,row=2)
+        self.frame1 = ttk.Frame(self.frame0)
+        self.frame1.grid(row=2,column=2)
+        self.frame2 = ttk.Frame(self.frame0)
+        self.frame2.grid(row=2,column=3)
+        self.frame3 = ttk.Frame(self.frame0)
+        self.frame3.grid(row=2,column=4)
+        self.frame4 = ttk.Frame(self.frame0)
+        self.frame4.grid(row=2,column=1)
+        self.frame5 = ttk.Frame(self.frame0)
+        self.frame5.grid(row=1,column=2)
+        self.frame6 = ttk.Frame(self.frame0)
+        self.frame6.grid(row=3,column=2)
+        self.frames = [self.frame4, self.frame1, self.frame2, self.frame3, self.frame5, self.frame6]
+        #Labels
+        for frame in range(6):
+            for row in range(3) :
+                for col in range(3) :
+                    self.label = tk.Label(self.frames[frame], background= cube.Rubiks_Cube_gui[frame][row][col],width=2 , height=1  )                    
+                    self.label.grid(column=col+1, row=row, padx= 1, pady= 1)
     def destroy2(self,variable):
         self.freym2.destroy()
         self.intvar.set(variable)

@@ -29,6 +29,7 @@ class Cube() :
         self.f3 = ["orange", "orange", "orange"]
         self.f  = [self.f1, self.f2, self.f3]    
         self.Rubiks_Cube = [self.a, self.b, self.c, self.d, self.e, self.f]
+        self.Rubiks_Cube_gui = [self.d, self.a, self.b, self.c, self.e, self.f]
         self.vertical_rotation_a = [self.a, self.f, self.c, self.e]
         self.vertical_rotation_b = [self.b, self.f, self.d, self.e]
         self.horizontal_rotation = [self.a, self.b, self.c, self.d]
@@ -85,13 +86,4 @@ class Cube() :
         matrix.reverse()
         return matrix
 
-    def transpoze(self, matrix):
-        transposed= list(zip(*matrix))
-        matrix[:] = transposed[:]
-        return matrix
-            
 
-cube = Cube()
-cube.scrollx(0, cube.horizontal_rotation, 1)
-for i in cube.Rubiks_Cube:
-    print(i)
