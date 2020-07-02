@@ -86,4 +86,24 @@ class Cube() :
         matrix.reverse()
         return matrix
 
+    def reset(self):
+        self.a1 = ["#00ccff", "#00ccff", "#00ccff"]
+        self.a2 = ["#00ccff", "#00ccff", "#00ccff"]
+        self.a3 = ["#00ccff", "#00ccff", "#00ccff"]
+        self.b1 = ["white", "white", "white"]
+        self.b2 = ["white", "white", "white"]
+        self.b3 = ["white", "white", "white"]
+        self.c1 = ["green", "green", "green"]
+        self.c2 = ["green", "green", "green"]
+        self.c3 = ["green", "green", "green"]
+        self.d1 = ["yellow", "yellow", "yellow"]
+        self.d2 = ["yellow", "yellow", "yellow"]
+        self.d3 = ["yellow", "yellow", "yellow"]
+        self.e1 = ["red", "red", "red"]
+        self.e2 = ["red", "red", "red"]
+        self.e3 = ["red", "red", "red"]
+        self.f1 = ["orange", "orange", "orange"]
+        self.f2 = ["orange", "orange", "orange"]
+        self.f3 = ["orange", "orange", "orange"]
+
 
