@@ -277,3 +277,5 @@ class Pencere(tk.Tk):
         cube.reset()
         self.surface_select(self.surface)
         self.total_action()
+       
+cube = rc.Cube()
