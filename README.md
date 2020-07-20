@@ -13,6 +13,8 @@ o Tkinter Canvas(added)
 
 o Save and continue features
 
+o Mixer
+
 o Mouse events
 
 o Keyboard events
