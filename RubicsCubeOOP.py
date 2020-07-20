@@ -29,7 +29,6 @@ class Cube() :
         self.f3 = ["orange", "orange", "orange"]
         self.f  = [self.f1, self.f2, self.f3]    
         self.Rubiks_Cube = [self.a, self.b, self.c, self.d, self.e, self.f]
-        self.Rubiks_Cube_gui = [self.d, self.a, self.b, self.c, self.e, self.f]
         self.vertical_rotation_a = [self.a, self.f, self.c, self.e]
         self.vertical_rotation_b = [self.b, self.f, self.d, self.e]
         self.horizontal_rotation = [self.a, self.b, self.c, self.d]
@@ -84,26 +83,12 @@ class Cube() :
 
     def mirrorx(self, matrix):
         matrix.reverse()
-        return matrix
-
+        return matrix    
+    
     def reset(self):
-        self.a1 = ["#00ccff", "#00ccff", "#00ccff"]
-        self.a2 = ["#00ccff", "#00ccff", "#00ccff"]
-        self.a3 = ["#00ccff", "#00ccff", "#00ccff"]
-        self.b1 = ["white", "white", "white"]
-        self.b2 = ["white", "white", "white"]
-        self.b3 = ["white", "white", "white"]
-        self.c1 = ["green", "green", "green"]
-        self.c2 = ["green", "green", "green"]
-        self.c3 = ["green", "green", "green"]
-        self.d1 = ["yellow", "yellow", "yellow"]
-        self.d2 = ["yellow", "yellow", "yellow"]
-        self.d3 = ["yellow", "yellow", "yellow"]
-        self.e1 = ["red", "red", "red"]
-        self.e2 = ["red", "red", "red"]
-        self.e3 = ["red", "red", "red"]
-        self.f1 = ["orange", "orange", "orange"]
-        self.f2 = ["orange", "orange", "orange"]
-        self.f3 = ["orange", "orange", "orange"]
+        for surface in self.Rubiks_Cube :
+            for row in surface:
+                for column in row :
+                    surface[surface.index(row)][row.index(column)] = surface[1][1]
 
 
