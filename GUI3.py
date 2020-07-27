@@ -3,14 +3,37 @@
 
 import tkinter as tk
 from tkinter import ttk
-from tkinter import messagebox
+from tkinter import filedialog
 import RubicsCubeOOP as rc
-import os
+import os, json
 
 class Pencere(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        #Window Options
+        self.title("cacaleno/Rubik's Cube")
+        self.wm_resizable(0,0)
+        #Logic
         self.surface = 0
+        self.save = None
+        #Menubar
+        self.menubar =tk.Menu()
+        self.cubemenu = tk.Menu(self.menubar)
+        self.cubemenu.add_command(label="New", command=self.new_file)
+        self.cubemenu.add_command(label="Save", command=self.save_current_file)
+        self.cubemenu.add_command(label="Save as", command=self.save_as_file)
+        self.cubemenu.add_command(label="Load", command=self.load_file)
+        self.cubemenu.add_separator()
+        self.cubemenu.add_command(label="Settings", command=self.Settings)
+        self.cubemenu.add_separator()
+        self.cubemenu.add_command(label="Exit", command = self.quit)
+        self.menubar.add_cascade(menu=self.cubemenu, label="Cube")
+        self.helpmenu = tk.Menu(self.menubar)
+        self.helpmenu.add_command(label="About")
+        self.helpmenu.add_command(label="Document")
+        self.helpmenu.add_command(label="Contact")
+        self.menubar.add_cascade(menu=self.helpmenu, label="Help")
+        self.config(menu=self.menubar)        
         #Frames
         self.buttonframe = ttk.Frame(self, padding=(34,10,36,10), relief="groove")
         self.buttonframe.pack()
@@ -20,19 +43,21 @@ class Pencere(tk.Tk):
         self.totalframe.pack()
         #ButtonFrame Buttons
         self.button1 = ttk.Button(self.buttonframe, text="FRONT", command=lambda :self.surface_select(0))
-        self.button1.grid(column=0, row=0)
+        self.button1.grid(column=0, row=1)
         self.button2 = ttk.Button(self.buttonframe, text="RIGHT", command=lambda :self.surface_select(1))
-        self.button2.grid(column=1, row=0)
+        self.button2.grid(column=1, row=1)
         self.button3 = ttk.Button(self.buttonframe, text="BEHIND", command=lambda :self.surface_select(2))
-        self.button3.grid(column=2, row=0)
+        self.button3.grid(column=2, row=1)
         self.button4 = ttk.Button(self.buttonframe, text="LEFT", command=lambda :self.surface_select(3))
-        self.button4.grid(column=3, row=0)
+        self.button4.grid(column=3, row=1)
         self.button5 = ttk.Button(self.buttonframe, text="TOP", command=lambda :self.surface_select(4))
-        self.button5.grid(column=4, row=0)
+        self.button5.grid(column=4, row=1)
         self.button6 = ttk.Button(self.buttonframe, text="BOTTOM", command=lambda :self.surface_select(5))
-        self.button6.grid(column=5, row=0)
+        self.button6.grid(column=5, row=1)
         self.reset = ttk.Button(self.buttonframe, text="RESET", command=lambda :self.resetter())
-        self.reset.grid(column=6, row=0)
+        self.reset.grid(column=0, row=2)
+        self.mixbutton = ttk.Button(self.buttonframe, text="MIX", command=lambda :self.mixer())
+        self.mixbutton.grid(column=1, row=2)
         #SurfaceFrame Button Pics
         self.left = tk.PhotoImage(file=os.getcwd()+"/buttons/left.png")
         self.right = tk.PhotoImage(file=os.getcwd()+"/buttons/right.png")
@@ -49,29 +74,29 @@ class Pencere(tk.Tk):
         self.rightframe.grid(row = 2, column = 3)
         self.bottomframe = tk.Frame(self.surfaceframe)
         self.bottomframe.grid(row = 3, column = 2)
-        self.button1 = tk.Button(self.verticalframe, image=self.up, command=lambda : self.vertical(0, -1))
+        self.button1 = tk.Button(self.verticalframe, image=self.up, command=lambda : self.vertical_call(0, -1))
         self.button1.grid(row = 0, column = 0)
-        self.button2 = tk.Button(self.verticalframe, image=self.up, command=lambda : self.vertical(2, -1))
+        self.button2 = tk.Button(self.verticalframe, image=self.up, command=lambda : self.vertical_call(2, -1))
         self.button2.grid(row= 0, column = 2)
         self.label1 = tk.Label(self.verticalframe)
         self.label1.grid(row= 0, column = 1, padx = 40)
-        self.button3 = tk.Button(self.leftframe, image=self.left, command=lambda: self.horizontal(0, -1) )
+        self.button3 = tk.Button(self.leftframe, image=self.left, command=lambda: self.horizontal_call(0, -1) )
         self.button3.grid(row = 1)
         self.label2 = tk.Label(self.leftframe)
         self.label2.grid(pady = 40, row = 2)
-        self.button4 = tk.Button(self.leftframe, image=self.left, command=lambda: self.horizontal(2, -1))
+        self.button4 = tk.Button(self.leftframe, image=self.left, command=lambda: self.horizontal_call(2, -1))
         self.button4.grid(row = 3)
-        self.button5 = tk.Button(self.rightframe, image=self.right, command=lambda: self.horizontal(0, 1))
+        self.button5 = tk.Button(self.rightframe, image=self.right, command=lambda: self.horizontal_call(0, 1))
         self.button5.grid()
         self.label3 = tk.Label(self.rightframe)
         self.label3.grid(pady = 40)
-        self.button6 = tk.Button(self.rightframe, image=self.right, command=lambda: self.horizontal(2, 1))
+        self.button6 = tk.Button(self.rightframe, image=self.right, command=lambda: self.horizontal_call(2, 1))
         self.button6.grid()
-        self.button7 = tk.Button(self.bottomframe, image = self.down, command=lambda : self.vertical(0, 1))
+        self.button7 = tk.Button(self.bottomframe, image = self.down, command=lambda : self.vertical_call(0, 1))
         self.button7.grid(row = 0, column = 0)
         self.label4 = tk.Label(self.bottomframe)
         self.label4.grid(padx = 40, row = 0, column = 1)
-        self.button8 = tk.Button(self.bottomframe, image = self.down, command=lambda : self.vertical(2, 1) )
+        self.button8 = tk.Button(self.bottomframe, image = self.down, command=lambda : self.vertical_call(2, 1) )
         self.button8.grid(row = 0, column = 2)
         self.canvas = tk.Canvas(self.canvasframe, height=250, width=250)
         self.canvas.pack()
@@ -119,147 +144,15 @@ class Pencere(tk.Tk):
                     self.surfacecanvaslist[num][row].append(self.totalrectangle)
         self.mainloop()
 
-    def vertical(self, column, rotation):  # look = 0 acef rotation , look = 1 bdef rotation
-                                        # rotation -1 --> up       1 --> down
-        if self.surface == 0 or self.surface == 4 or self.surface == 5  :
-            cube.mirrorx(cube.mirror(cube.c))
-            if column == 0:
-                if rotation == -1 :
-                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
-                    cube.rotate90_left(cube.d)
-                elif rotation == 1 :
-                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
-                    cube.rotate90_right(cube.d)
-            elif column == 2 :
-                if rotation == -1 :
-                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
-                    cube.rotate90_right(cube.b)
-                elif rotation == 1 :
-                    cube.scrolly(column, cube.vertical_rotation_a, rotation)
-                    cube.rotate90_left(cube.b)
-            cube.mirrorx(cube.mirror(cube.c))
-        if self.surface == 1 :
-            cube.mirrorx(cube.mirror(cube.d))
-            cube.rotate90_right(cube.e)
-            cube.rotate90_left(cube.f)
-            if column == 0:
-                if rotation == -1 :
-                    cube.scrolly(column, cube.vertical_rotation_b, rotation)
-                    cube.rotate90_left(cube.a)
-                elif rotation == 1 :
-                    cube.scrolly(column, cube.vertical_rotation_b, rotation)                        
-                    cube.rotate90_right(cube.a)
-            elif column == 2 :
-                if rotation == -1 :
-                    cube.scrolly(column, cube.vertical_rotation_b, rotation)                        
-                    cube.rotate90_right(cube.c)
-                elif rotation == 1 :
-                    cube.scrolly(column, cube.vertical_rotation_b, rotation)
-                    cube.rotate90_left(cube.c)
-            cube.rotate90_right(cube.f)
-            cube.rotate90_left(cube.e)
-            cube.mirrorx(cube.mirror(cube.d))
-        if self.surface == 2 :
-            cube.mirrorx(cube.mirror(cube.c))
-            if column == 0:
-                if rotation == -1 :
-                    cube.scrolly(2, cube.vertical_rotation_a, 1)
-                    cube.rotate90_left(cube.b)
-                elif rotation == 1 :
-                    cube.scrolly(2, cube.vertical_rotation_a, -1)
-                    cube.rotate90_right(cube.b)
-            elif column == 2 :
-                if rotation == -1 :
-                    cube.scrolly(0, cube.vertical_rotation_a, 1)
-                    cube.rotate90_right(cube.d)
-                elif rotation == 1 :
-                    cube.scrolly(0, cube.vertical_rotation_a, -1)
-                    cube.rotate90_left(cube.d)
-            cube.mirrorx(cube.mirror(cube.c))
-        if self.surface == 3 :
-            cube.mirrorx(cube.mirror(cube.d))
-            cube.rotate90_right(cube.e)
-            cube.rotate90_left(cube.f)
-            if column == 0:
-                if rotation == -1 :
-                    cube.scrolly(2, cube.vertical_rotation_b, 1)
-                    cube.rotate90_left(cube.c)
-                elif rotation == 1 :
-                    cube.scrolly(2, cube.vertical_rotation_b, -1)                        
-                    cube.rotate90_right(cube.c)
-            elif column == 2 :
-                if rotation == -1 :
-                    cube.scrolly(0, cube.vertical_rotation_b, 1)                        
-                    cube.rotate90_right(cube.a)
-                elif rotation == 1 :
-                    cube.scrolly(0, cube.vertical_rotation_b, -1)
-                    cube.rotate90_left(cube.a)
-            cube.rotate90_right(cube.f)
-            cube.rotate90_left(cube.e)
-            cube.mirrorx(cube.mirror(cube.d))
-        self.surface_select(self.surface)
+    def vertical_call(self, column, rotation) : 
+        cube.vertical(column, rotation)
+        self.surface_select(cube.surface)
         self.total_action()  
 
-    def horizontal(self, row, rotation):  # direction ----> 1 = left -1 = right    
-        if self.surface == 4 :
-            cube.mirrorx(cube.mirror(cube.d))
-            cube.rotate90_right(cube.e)
-            cube.rotate90_left(cube.f)
-            if row == 0:
-                if rotation == -1 :
-                    cube.scrolly(2, cube.vertical_rotation_b, -1)
-                    cube.rotate90_right(cube.c)
-                elif rotation == 1 :
-                    cube.scrolly(2, cube.vertical_rotation_b, 1)                        
-                    cube.rotate90_left(cube.c)
-            elif row == 2 :
-                if rotation == -1 :
-                    cube.scrolly(0, cube.vertical_rotation_b, -1)                        
-                    cube.rotate90_left(cube.a)
-                elif rotation == 1 :
-                    cube.scrolly(0, cube.vertical_rotation_b, 1)
-                    cube.rotate90_right(cube.a)
-            cube.rotate90_right(cube.f)
-            cube.rotate90_left(cube.e)
-            cube.mirrorx(cube.mirror(cube.d))
-        elif self.surface == 5 :
-            cube.mirrorx(cube.mirror(cube.d))
-            cube.rotate90_right(cube.e)
-            cube.rotate90_left(cube.f)
-            if row == 0:
-                if rotation == -1 :
-                    cube.scrolly(row, cube.vertical_rotation_b, 1)
-                    cube.rotate90_right(cube.a)
-                elif rotation == 1 :
-                    cube.scrolly(row, cube.vertical_rotation_b, -1)                        
-                    cube.rotate90_left(cube.a)
-            elif row == 2 :
-                if rotation == -1 :
-                    cube.scrolly(row, cube.vertical_rotation_b, 1)                        
-                    cube.rotate90_left(cube.c)
-                elif rotation == 1 :
-                    cube.scrolly(row, cube.vertical_rotation_b, -1)
-                    cube.rotate90_right(cube.c)
-            cube.rotate90_right(cube.f)
-            cube.rotate90_left(cube.e)
-            cube.mirrorx(cube.mirror(cube.d))
-        else :
-            if row == 0  : 
-                if rotation == -1 :
-                    cube.scrollx(row, cube.horizontal_rotation , rotation)     
-                    cube.rotate90_right(cube.e)
-                elif rotation == 1 :
-                    cube.scrollx(row, cube.horizontal_rotation , rotation)
-                    cube.rotate90_left(cube.e)
-            if row == 2  :
-                if rotation == -1:
-                    cube.scrollx(row, cube.horizontal_rotation , rotation)
-                    cube.rotate90_left(cube.f)
-                elif rotation == 1 :
-                    cube.scrollx(row, cube.horizontal_rotation , rotation)
-                    cube.rotate90_right(cube.f)
-        self.surface_select(self.surface)
-        self.total_action()   
+    def horizontal_call(self, row, rotation) : 
+        cube.horizontal(row, rotation)
+        self.surface_select(cube.surface)
+        self.total_action()    
 
     def surface_select(self, surface):
         self.surface = surface
@@ -277,4 +170,57 @@ class Pencere(tk.Tk):
         cube.reset()
         self.surface_select(self.surface)
         self.total_action()
+
+    def mixer(self) :
+        cube.mix()
+        self.surface_select(cube.surface)
+        self.total_action()    
+    
+    def Settings(self):
+        top = tk.Toplevel()
+        top.title("Settings")
+        top.geometry("250x250")
+        button = tk.Button(top, text="OK", command=lambda : top.destroy())
+        button.pack()
+        top.mainloop()
+
+    def load_file(self):
+        loadfilename = filedialog.askopenfilename(initialdir=os.getcwd, title="Select", filetypes=(("JavaScript Object Notation",  "*.json*"), ("all files", "*.*"))) 
+        load_cube = open(loadfilename, "r")
+        jsoncube = json.load(load_cube)
+        print(jsoncube["cube"])
+        for i in range(6) :
+            cube.Rubiks_Cube[i] = jsoncube["cube"][i]
+        print(cube.Rubiks_Cube)
+        self.surface_select(self.surface)
+        self.total_action()
+
+    def save_as_file(self):
+        cubedict = {"cube" : cube.Rubiks_Cube, "Settings": None}
+        savefilename = filedialog.asksaveasfilename(initialdir=os.getcwd, title="Select", filetypes=(("JavaScript Object Notation",  "*.json*"), ("all files", "*.*")))
+        print(type(savefilename))
+        print(savefilename)
+        if savefilename == () :
+            return
+        self.save = savefilename
+        with open(savefilename+".json", "w") as write_cube:
+            json.dump(cubedict, write_cube)
+        #except:
+            #pass
+
+    def save_current_file(self):
+        cubedict = {"cube" : cube.Rubiks_Cube, "Settings": None}
+        if self.save == None : 
+            self.save_as_file()
+            return
+        with open(savefilename+".json", "w") as write_cube:
+            json.dump(cubedict, write_cube)
+    
+    def new_file(self):
+        self.resetter()
+        self.save = None
+        self.surface_select(self.surface)
+        self.total_action()
+        
+
 cube = rc.Cube()
