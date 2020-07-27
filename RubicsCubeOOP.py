@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import random
+
 class Cube() :
     def __init__(self):
         super().__init__()
@@ -32,6 +34,8 @@ class Cube() :
         self.vertical_rotation_a = [self.a, self.f, self.c, self.e]
         self.vertical_rotation_b = [self.b, self.f, self.d, self.e]
         self.horizontal_rotation = [self.a, self.b, self.c, self.d]
+        self.surface = 0
+
     def rotate90_left(self,matrix):
         new_matrix = []
         for i in range(len(matrix[0]), 0, -1):
@@ -91,4 +95,172 @@ class Cube() :
                 for column in row :
                     surface[surface.index(row)][row.index(column)] = surface[1][1]
 
+    def vertical(self, column, rotation):  # look = 0 acef rotation , look = 1 bdef rotation
+                                        # rotation -1 --> up       1 --> down
+        if self.surface == 0 or self.surface == 4 or self.surface == 5  :
+            self.mirrorx(self.mirror(self.c))
+            if column == 0:
+                if rotation == -1 :
+                    self.scrolly(column, self.vertical_rotation_a, rotation)
+                    self.rotate90_left(self.d)
+                elif rotation == 1 :
+                    self.scrolly(column, self.vertical_rotation_a, rotation)
+                    self.rotate90_right(self.d)
+            elif column == 2 :
+                if rotation == -1 :
+                    self.scrolly(column, self.vertical_rotation_a, rotation)
+                    self.rotate90_right(self.b)
+                elif rotation == 1 :
+                    self.scrolly(column, self.vertical_rotation_a, rotation)
+                    self.rotate90_left(self.b)
+            self.mirrorx(self.mirror(self.c))
+        if self.surface == 1 :
+            self.mirrorx(self.mirror(self.d))
+            self.rotate90_right(self.e)
+            self.rotate90_left(self.f)
+            if column == 0:
+                if rotation == -1 :
+                    self.scrolly(column, self.vertical_rotation_b, rotation)
+                    self.rotate90_left(self.a)
+                elif rotation == 1 :
+                    self.scrolly(column, self.vertical_rotation_b, rotation)                        
+                    self.rotate90_right(self.a)
+            elif column == 2 :
+                if rotation == -1 :
+                    self.scrolly(column, self.vertical_rotation_b, rotation)                        
+                    self.rotate90_right(self.c)
+                elif rotation == 1 :
+                    self.scrolly(column, self.vertical_rotation_b, rotation)
+                    self.rotate90_left(self.c)
+            self.rotate90_right(self.f)
+            self.rotate90_left(self.e)
+            self.mirrorx(self.mirror(self.d))
+        if self.surface == 2 :
+            self.mirrorx(self.mirror(self.c))
+            if column == 0:
+                if rotation == -1 :
+                    self.scrolly(2, self.vertical_rotation_a, 1)
+                    self.rotate90_left(self.b)
+                elif rotation == 1 :
+                    self.scrolly(2, self.vertical_rotation_a, -1)
+                    self.rotate90_right(self.b)
+            elif column == 2 :
+                if rotation == -1 :
+                    self.scrolly(0, self.vertical_rotation_a, 1)
+                    self.rotate90_right(self.d)
+                elif rotation == 1 :
+                    self.scrolly(0, self.vertical_rotation_a, -1)
+                    self.rotate90_left(self.d)
+            self.mirrorx(self.mirror(self.c))
+        if self.surface == 3 :
+            self.mirrorx(self.mirror(self.d))
+            self.rotate90_right(self.e)
+            self.rotate90_left(self.f)
+            if column == 0:
+                if rotation == -1 :
+                    self.scrolly(2, self.vertical_rotation_b, 1)
+                    self.rotate90_left(self.c)
+                elif rotation == 1 :
+                    self.scrolly(2, self.vertical_rotation_b, -1)                        
+                    self.rotate90_right(self.c)
+            elif column == 2 :
+                if rotation == -1 :
+                    self.scrolly(0, self.vertical_rotation_b, 1)                        
+                    self.rotate90_right(self.a)
+                elif rotation == 1 :
+                    self.scrolly(0, self.vertical_rotation_b, -1)
+                    self.rotate90_left(self.a)
+            self.rotate90_right(self.f)
+            self.rotate90_left(self.e)
+            self.mirrorx(self.mirror(self.d))
 
+    def horizontal(self, row, rotation):  # direction ----> 1 = left -1 = right    
+        if self.surface == 4 :
+            self.mirrorx(self.mirror(self.d))
+            self.rotate90_right(self.e)
+            self.rotate90_left(self.f)
+            if row == 0:
+                if rotation == -1 :
+                    self.scrolly(2, self.vertical_rotation_b, -1)
+                    self.rotate90_right(self.c)
+                elif rotation == 1 :
+                    self.scrolly(2, self.vertical_rotation_b, 1)                        
+                    self.rotate90_left(self.c)
+            elif row == 2 :
+                if rotation == -1 :
+                    self.scrolly(0, self.vertical_rotation_b, -1)                        
+                    self.rotate90_left(self.a)
+                elif rotation == 1 :
+                    self.scrolly(0, self.vertical_rotation_b, 1)
+                    self.rotate90_right(self.a)
+            self.rotate90_right(self.f)
+            self.rotate90_left(self.e)
+            self.mirrorx(self.mirror(self.d))
+        elif self.surface == 5 :
+            self.mirrorx(self.mirror(self.d))
+            self.rotate90_right(self.e)
+            self.rotate90_left(self.f)
+            if row == 0:
+                if rotation == -1 :
+                    self.scrolly(row, self.vertical_rotation_b, 1)
+                    self.rotate90_right(self.a)
+                elif rotation == 1 :
+                    self.scrolly(row, self.vertical_rotation_b, -1)                        
+                    self.rotate90_left(self.a)
+            elif row == 2 :
+                if rotation == -1 :
+                    self.scrolly(row, self.vertical_rotation_b, 1)                        
+                    self.rotate90_left(self.c)
+                elif rotation == 1 :
+                    self.scrolly(row, self.vertical_rotation_b, -1)
+                    self.rotate90_right(self.c)
+            self.rotate90_right(self.f)
+            self.rotate90_left(self.e)
+            self.mirrorx(self.mirror(self.d))
+        else :
+            if row == 0  : 
+                if rotation == -1 :
+                    self.scrollx(row, self.horizontal_rotation , rotation)     
+                    self.rotate90_right(self.e)
+                elif rotation == 1 :
+                    self.scrollx(row, self.horizontal_rotation , rotation)
+                    self.rotate90_left(self.e)
+            if row == 2  :
+                if rotation == -1:
+                    self.scrollx(row, self.horizontal_rotation , rotation)
+                    self.rotate90_left(self.f)
+                elif rotation == 1 :
+                    self.scrollx(row, self.horizontal_rotation , rotation)
+                    self.rotate90_right(self.f)
+
+    def mix(self, mix_count = 1):
+        rotation_axis = [-1, 1]
+        row_column = [0, 2]
+        moves = [0, 1, 2, 3, 4, 5]
+        for i in range(mix_count):
+            a =random.choice(moves)
+            b = random.choice(row_column)
+            c = random.choice(rotation_axis)
+            self.surface = a
+            mov_type = ["vertical","horizontal"]
+            d = random.choice(mov_type)
+            if d == "vertical" : 
+                e = f"Vertikal{b, c}"
+                self.vertical(b, c)
+                #print("Yüzey:",a,"Hareket:",e)
+            elif d == "horizontal":
+                e = f"Horizontal{b, c}"
+                self.horizontal(b, c)
+                #print("Yüzey:",a,"Hareket:",e)
+
+    def undo(self,mov_type, row_or_column, rotation):
+        pass
+
+    def mov_registry(self):
+        pass
+    
+    def save(self):
+        pass
+
+    def load(self):
+        pass
